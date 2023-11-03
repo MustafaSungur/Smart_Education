@@ -2,7 +2,7 @@
 # Edit at httpswww.toptal.comdevelopersgitignoretemplates=node
 
 ### Node ###
-node_modules/
+node_modules
 # Logs
 logs
 .log
