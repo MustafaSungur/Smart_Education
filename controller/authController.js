@@ -25,7 +25,7 @@ exports.loginUser = async (req, res) => {
       if (same) {
         // USER SESSION
         req.session.userID = user.id;
-        return res.status(200).redirect("/");
+        return res.status(200).redirect("/users/dashboard");
       }
     }
 
@@ -41,4 +41,13 @@ exports.loginUser = async (req, res) => {
 exports.logoutUser = (req, res) => {
   req.session.destroy();
   res.redirect("/");
+};
+
+exports.getDashboardPage = async (req, res) => {
+  const user = await User.findById(req.session.userID);
+
+  res.status(200).render("dashboard", {
+    page_name: "dashboard",
+    user,
+  });
 };
