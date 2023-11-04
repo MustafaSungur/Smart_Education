@@ -51,7 +51,6 @@ exports.getCourse = async (req, res) => {
     const course = await Course.findOne({ slug: req.params.slug }).populate(
       "user"
     );
-    console.log(course);
     res.status(200).render("course", {
       course,
       page_name: "courses",
