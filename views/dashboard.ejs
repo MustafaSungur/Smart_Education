@@ -3,125 +3,63 @@ include("./partials/_navigation.ejs") -%>
 
 <div class="all-title-box">
   <div class="container text-center">
-    <h1>
-      <%= user.name %><span class="m_1"
-        >Lorem Ipsum dolroin gravida nibh vel velit.</span
-      >
-    </h1>
+    <h1><%= user.name %><span class="m_1"> <%= user.role %></span></h1>
   </div>
 </div>
 
 <div id="overviews" class="section wb">
   <div class="container">
+    <% if(user.role!=="student")
+          { %>
+             
+         <button
+      type="button"
+      class="btn btn-warning "
+      data-toggle="modal"
+      data-target="#myModal"
+    >
+      Create Course
+    </button>
+        
     <div class="row">
       <div class="col-lg-12 blog-post-single">
         <div class="blog-author">
           <div class="author-bio">
-            <h3 class="author_name"><a href="#">Tom Jobs</a></h3>
-            <h5>CEO at <a href="#">SmartEDU</a></h5>
-            <p class="author_det">
-              Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod
-              tempor incididunt ut aut reiciendise voluptat maiores alias
-              consequaturs aut perferendis doloribus omnis saperet docendi nec,
-              eos ea alii molestiae aliquand.
-            </p>
+            <h3 class="author_name">Create Courses From: <%= user.name %></h3>
+            
           </div>
-          <div class="author-desc">
-            <img src="/images/author.jpg" alt="about author" />
-          </div>
+          
         </div>
       </div>
       <!-- end col -->
     </div>
     <!-- end row -->
     <div class="row mt-5">
-      <div class="col-lg-6 col-md-6 col-12">
-        <div class="course-item mb-5">
-          <div class="image-blog">
-            <img src="images/blog_1.jpg" alt="" class="img-fluid" />
-          </div>
-          <div class="course-br">
-            <div class="course-title">
-              <h2><a href="course-single.html" title="">Engineering</a></h2>
-            </div>
-            <div class="course-desc">
-              <p>
-                Lorem ipsum door sit amet, fugiat deicata avise id cum, no quo
-                maiorum intel ogrets geuiat operts elicata libere avisse id
-                cumlegebat, liber regione eu sit....
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- end col -->
+          
+
+         <% for (let i=0; i < courses.length; i++) { %>
 
       <div class="col-lg-6 col-md-6 col-12">
         <div class="course-item mb-5">
           <div class="image-blog">
-            <img src="images/blog_2.jpg" alt="" class="img-fluid" />
+            <img src="/images/blog_2.jpg" alt="" class="img-fluid" />
           </div>
           <div class="course-br">
             <div class="course-title">
               <h2>
-                <a href="course-single.html" title="">Hotel Management</a>
+                <a href="/courses/course/:<%= courses[i].slug %>" title=""><%= courses[i].name %></a>
               </h2>
             </div>
             <div class="blog-desc">
               <p>
-                Lorem ipsum door sit amet, fugiat deicata avise id cum, no quo
-                maiorum intel ogrets geuiat operts elicata libere avisse id
-                cumlegebat, liber regione eu sit....
+               <%= courses[i].description %>
               </p>
             </div>
           </div>
         </div>
       </div>
       <!-- end col -->
-      <div class="col-lg-6 col-md-6 col-12">
-        <div class="course-item mb-5">
-          <div class="image-blog">
-            <img src="images/blog_2.jpg" alt="" class="img-fluid" />
-          </div>
-          <div class="course-br">
-            <div class="course-title">
-              <h2>
-                <a href="course-single.html" title="">Hotel Management</a>
-              </h2>
-            </div>
-            <div class="blog-desc">
-              <p>
-                Lorem ipsum door sit amet, fugiat deicata avise id cum, no quo
-                maiorum intel ogrets geuiat operts elicata libere avisse id
-                cumlegebat, liber regione eu sit....
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- end col -->
-      <div class="col-lg-6 col-md-6 col-12">
-        <div class="course-item mb-5">
-          <div class="image-blog">
-            <img src="images/blog_2.jpg" alt="" class="img-fluid" />
-          </div>
-          <div class="course-br">
-            <div class="course-title">
-              <h2>
-                <a href="course-single.html" title="">Hotel Management</a>
-              </h2>
-            </div>
-            <div class="blog-desc">
-              <p>
-                Lorem ipsum door sit amet, fugiat deicata avise id cum, no quo
-                maiorum intel ogrets geuiat operts elicata libere avisse id
-                cumlegebat, liber regione eu sit....
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- end col -->
+        <% } %> 
     </div>
     <!-- end row -->
   </div>
@@ -129,4 +67,59 @@ include("./partials/_navigation.ejs") -%>
 </div>
 <!-- end section -->
 
+<!-- MODAL -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Create Course</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/courses">
+          <div class="form-group">
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              id="courseName"
+              placeholder="Course Name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <textarea
+              class="form-control"
+              id="courseDescription"
+              name="description"
+              placeholder="Course Description"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <select class="form-control" id="category" name="category" required>
+              <option value="" disabled selected>Select Category</option>
+              <% for (let i = 0; i <categories.length; i++) { %>
+               <option value="<%= categories[i].name %>">
+                <%= categories[i].name %>
+               </option>
+              <% } %>
+            </select>
+          </div>
+          <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-warning">Create</button>
+      </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- MODAL-END -->
+     <% } %>
 <%- include("./partials/_footer.ejs") -%>

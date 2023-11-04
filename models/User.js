@@ -16,6 +16,11 @@ const Userschema = new Schema({
     type: String,
     require: true,
   },
+  role: {
+    type: String,
+    enum: ["student", "teacher", "admin"],
+    default: "student",
+  },
 });
 
 Userschema.pre("save", async function (next) {

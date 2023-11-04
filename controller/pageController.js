@@ -21,9 +21,3 @@ exports.getLoginPage = (req, res) => {
     page_name: "login",
   });
 };
-
-exports.getDashboardPage = (req, res) => {
-  res.status(200).render("dashboard", {
-    page_name: "dashboard",
-  });
-};
