@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
@@ -69,15 +71,18 @@ exports.getCourse = async (req, res) => {
 exports.enrollCourse = async (req, res) => {
   try {
     const user = await User.findById(req.session.userID);
-    console.log(user.courses);
-    isExist = user.courses.includes("new ObjectId('654b8e50721ea6a655892824')");
-    console.log(isExist);
+
+    // ObjectId'ye dönüştürme
+    const courseId = new mongoose.Types.ObjectId(req.body.course_id);
+    const isExist = user.courses.includes(courseId);
+
     if (!isExist) {
-      await user.courses.push(req.body.course_id);
+      user.courses.push(courseId);
       await user.save();
     } else {
       console.log("already exist");
     }
+
     res.status(200).redirect("/users/dashboard");
   } catch (error) {
     res.status(400).json({
