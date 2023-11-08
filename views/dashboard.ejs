@@ -1,43 +1,42 @@
-<%- include("./partials/_header.ejs") -%> <%-
-include("./partials/_navigation.ejs") -%>
+<%- include("./partials/_header.ejs") -%> <%- include("./partials/_navigation.ejs") -%>
 
 <div class="all-title-box">
   <div class="container text-center">
-    <h1><%= user.name %><span class="m_1"> <%= user.role %></span></h1>
+    <h1>
+      <%= user.name %><span class="m_1">
+        <%= user.role %>
+      </span>
+    </h1>
   </div>
 </div>
-
+<% if(user.role!=="student" )  { %>
 <div id="overviews" class="section wb">
+
   <div class="container">
-    <% if(user.role!=="student")
-          { %>
-             
-         <button
-      type="button"
-      class="btn btn-warning "
-      data-toggle="modal"
-      data-target="#myModal"
-    >
+
+
+    <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#myModal">
       Create Course
     </button>
-        
+
     <div class="row">
       <div class="col-lg-12 blog-post-single">
         <div class="blog-author">
           <div class="author-bio">
-            <h3 class="author_name">Create Courses From: <%= user.name %></h3>
-            
+            <h3 class="author_name">Create Courses From: <%= user.name %>
+            </h3>
+
           </div>
-          
+
         </div>
       </div>
       <!-- end col -->
     </div>
     <!-- end row -->
     <div class="row mt-5">
-          
 
-         <% for (let i=0; i < courses.length; i++) { %>
+
+      <% for (let i=0; i < courses.length; i++) { %>
 
       <div class="col-lg-6 col-md-6 col-12">
         <div class="course-item mb-5">
@@ -47,26 +46,31 @@ include("./partials/_navigation.ejs") -%>
           <div class="course-br">
             <div class="course-title">
               <h2>
-                <a href="/courses/course/:<%= courses[i].slug %>" title=""><%= courses[i].name %></a>
+                <a href="/courses/course/<%= courses[i].slug %>" title="">
+                  <%= courses[i].name %>
+                </a>
               </h2>
             </div>
             <div class="blog-desc">
               <p>
-               <%= courses[i].description %>
+                <%= courses[i].description %>
               </p>
             </div>
           </div>
         </div>
       </div>
       <!-- end col -->
-        <% } %> 
+      <% } %>
     </div>
     <!-- end row -->
-  </div>
-  <!-- end container -->
-</div>
-<!-- end section -->
 
+
+    <!-- end container -->
+  </div>
+
+
+  <!-- end section -->
+</div>
 <!-- MODAL -->
 <div class="modal" id="myModal">
   <div class="modal-dialog">
@@ -80,46 +84,98 @@ include("./partials/_navigation.ejs") -%>
       <div class="modal-body">
         <form method="post" action="/courses">
           <div class="form-group">
-            <input
-              type="text"
-              name="name"
-              class="form-control"
-              id="courseName"
-              placeholder="Course Name"
-              required
-            />
+            <input type="text" name="name" class="form-control" id="courseName" placeholder="Course Name" required />
           </div>
           <div class="form-group">
-            <textarea
-              class="form-control"
-              id="courseDescription"
-              name="description"
-              placeholder="Course Description"
-              required
-            ></textarea>
+            <textarea class="form-control" id="courseDescription" name="description" placeholder="Course Description"
+              required></textarea>
           </div>
           <div class="form-group">
             <select class="form-control" id="category" name="category" required>
               <option value="" disabled selected>Select Category</option>
-              <% for (let i = 0; i <categories.length; i++) { %>
-               <option value="<%= categories[i].name %>">
+              <% for (let i=0; i <categories.length; i++) { %>
+              <option value="<%= categories[i].name %>">
                 <%= categories[i].name %>
-               </option>
+              </option>
               <% } %>
             </select>
           </div>
           <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Cancel
-        </button>
-        <button type="submit" class="btn btn-warning">Create</button>
-      </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-warning">Create</button>
+          </div>
         </form>
       </div>
-      
+
     </div>
   </div>
 </div>
 <!-- MODAL-END -->
-     <% } %>
+<% } %>
+
+<% if (user.role=="student") { %>
+<div id="overviews" class="section wb">
+
+
+  <div class="container">
+
+
+
+
+    <div class="row">
+      <div class="col-lg-12 blog-post-single">
+        
+        <div class="blog-author">
+          <div class="author-bio">
+            <h3 class="author_name">Enrolled courses by <%= user.name %>
+            </h3>
+
+          </div>
+
+        </div>
+      </div>
+      <!-- end col -->
+    </div>
+    <!-- end row -->
+    <div class="row mt-5">
+
+
+      <% for (let i=0; i < user.courses.length; i++) { %>
+
+      <div class="col-lg-6 col-md-6 col-12">
+        <div class="course-item mb-5">
+          <div class="image-blog">
+            <img src="/images/blog_2.jpg" alt="" class="img-fluid" />
+          </div>
+          <div class="course-br">
+            <div class="course-title">
+              <h2>
+                <a href="/courses/course/<%= user.courses[i].slug %>" title="">
+                  <%= user.courses[i].name %>
+                </a>
+              </h2>
+            </div>
+            <div class="blog-desc">
+              <p>
+                <%= user.courses[i].description %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+      <% } %>
+    </div>
+    <!-- end row -->
+
+
+    <!-- end container -->
+  </div>
+
+
+  <!-- end section -->
+</div>
+<% } %>
 <%- include("./partials/_footer.ejs") -%>

@@ -1,5 +1,6 @@
 const Course = require("../models/Course");
 const Category = require("../models/Category");
+const User = require("../models/User");
 
 exports.createCourse = async (req, res) => {
   try {
@@ -51,14 +52,37 @@ exports.getCourse = async (req, res) => {
     const course = await Course.findOne({ slug: req.params.slug }).populate(
       "user"
     );
+    const currentUser = await User.findById(req.session.userID);
     res.status(200).render("course", {
       course,
+      role: currentUser.role,
       page_name: "courses",
     });
   } catch (error) {
     res.status(400).json({
       status: "fail",
       error,
+    });
+  }
+};
+
+exports.enrollCourse = async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userID);
+    console.log(user.courses);
+    isExist = user.courses.includes("new ObjectId('654b8e50721ea6a655892824')");
+    console.log(isExist);
+    if (!isExist) {
+      await user.courses.push(req.body.course_id);
+      await user.save();
+    } else {
+      console.log("already exist");
+    }
+    res.status(200).redirect("/users/dashboard");
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: error.message,
     });
   }
 };
