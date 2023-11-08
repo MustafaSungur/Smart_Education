@@ -54,10 +54,10 @@ exports.getCourse = async (req, res) => {
     const course = await Course.findOne({ slug: req.params.slug }).populate(
       "user"
     );
-    const currentUser = await User.findById(req.session.userID);
+    const user = await User.findById(req.session.userID);
     res.status(200).render("course", {
       course,
-      role: currentUser.role,
+      user,
       page_name: "courses",
     });
   } catch (error) {
@@ -82,6 +82,21 @@ exports.enrollCourse = async (req, res) => {
     } else {
       console.log("already exist");
     }
+
+    res.status(200).redirect("/users/dashboard");
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: error.message,
+    });
+  }
+};
+
+exports.releaseCourse = async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userID);
+    await user.courses.pull({ _id: req.body.course_id });
+    await user.save();
 
     res.status(200).redirect("/users/dashboard");
   } catch (error) {

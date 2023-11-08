@@ -20,7 +20,8 @@ include("./partials/_navigation.ejs") -%>
           </div>
           <div class="post-content">
             <div class="post-date">
-              <% if(role !== "teacher") { %>
+              <% if(user.role !== "teacher" &&
+              !(user.courses.includes(course._id))) { %>
               <form <% if(global.userIN) { %>
                 method="post" action="/courses/enroll" class="d-flex
                 justify-content-end" <% }else {%> method="get" action="/login"
