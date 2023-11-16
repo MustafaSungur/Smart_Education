@@ -53,7 +53,7 @@
             </div>
             <div class="blog-desc">
               <p>
-                <%= courses[i].description %>
+                <%= courses[i].description.substring(0,100) + "..." %>
               </p>
             </div>
               
@@ -160,7 +160,7 @@
             </div>
             <div class="blog-desc">
               <p>
-                <%= user.courses[i].description %>
+                <%= user.courses[i].description.substring(0,100) + "..." %>
               </p>
             </div>
             <form 
