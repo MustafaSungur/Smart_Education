@@ -14,7 +14,7 @@ include("./partials/_navigation.ejs") -%>
 <div id="contact" class="section wb">
   <div class="container">
     <div class="section-title text-center">
-      <h3>Need Help? Sure we are Online!</h3>
+      <h3>Get In Touch With Us!</h3>
       <p class="lead">
         Let us give you more details about the special offer website you want
         us. Please fill out the form below. <br />We have million of website
@@ -24,33 +24,18 @@ include("./partials/_navigation.ejs") -%>
     <!-- end title -->
 
     <div class="row">
-      <div class="col-xl-6 col-md-12 col-sm-12">
+      <div class="col-xl-10 col-md-10 col-sm-10 m-auto">
         <div class="contact_form">
           <div id="message"></div>
-          <form
-            id="contactform"
-            class=""
-            action="contact.php"
-            name="contactform"
-            method="post"
-          >
+          <form id="contactform" class="" action="/contact" method="POST">
             <div class="row row-fluid">
               <div class="col-lg-6 col-md-6 col-sm-6">
                 <input
                   type="text"
-                  name="first_name"
-                  id="first_name"
-                  class="form-control"
-                  placeholder="First Name"
-                />
-              </div>
-              <div class="col-lg-6 col-md-6 col-sm-6">
-                <input
-                  type="text"
-                  name="last_name"
+                  name="name"
                   id="last_name"
                   class="form-control"
-                  placeholder="Last Name"
+                  placeholder="Name"
                 />
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6">
@@ -62,19 +47,11 @@ include("./partials/_navigation.ejs") -%>
                   placeholder="Your Email"
                 />
               </div>
-              <div class="col-lg-6 col-md-6 col-sm-6">
-                <input
-                  type="text"
-                  name="phone"
-                  id="phone"
-                  class="form-control"
-                  placeholder="Your Phone"
-                />
-              </div>
+
               <div class="col-lg-12 col-md-12 col-sm-12">
                 <textarea
                   class="form-control"
-                  name="comments"
+                  name="message"
                   id="comments"
                   rows="6"
                   placeholder="Give us more details.."
@@ -87,7 +64,7 @@ include("./partials/_navigation.ejs") -%>
                   id="submit"
                   class="btn btn-light btn-radius btn-brd grd1 btn-block"
                 >
-                  Get a Quote
+                  Send
                 </button>
               </div>
             </div>
