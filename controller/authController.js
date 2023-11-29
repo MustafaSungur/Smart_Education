@@ -54,9 +54,10 @@ exports.loginUser = async (req, res) => {
         req.flash("error", "Your password is not correct!");
         res.status(400).redirect("/login");
       }
+    } else {
+      req.flash("error", "User not exist!");
     }
-
-    res.status(401).send("Invalid email or password");
+    res.redirect("/login");
   } catch (error) {
     res.status(500).json({
       status: "fail",
@@ -74,11 +75,27 @@ exports.getDashboardPage = async (req, res) => {
   const user = await User.findById(req.session.userID).populate("courses");
   const categories = await Category.find();
   const courses = await Course.find({ user: req.session.userID });
-
+  const users = await User.find();
   res.status(200).render("dashboard", {
     page_name: "dashboard",
     user,
     categories,
     courses,
+    users,
   });
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const deleteUser = await User.findByIdAndRemove(req.params.id);
+    const course = await Course.deleteMany({ user: req.params.id });
+
+    req.flash("success", `${deleteUser.name} deleted successfully`);
+    res.status(200).redirect("/users/dashboard");
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: error.message,
+    });
+  }
 };

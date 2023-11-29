@@ -20,8 +20,8 @@ include("./partials/_navigation.ejs") -%>
           </div>
           <div class="post-content">
             <div class="post-date">
-              <% if(user.role !== "teacher" &&
-              !(user.courses.includes(course._id))) { %>
+              <% if(user) { %> <% if(user.role !== "teacher" && user.role !==
+              "admin" && !(user.courses.includes(course._id))) { %>
               <form <% if(global.userIN) { %>
                 method="post" action="/courses/enroll" class="d-flex
                 justify-content-end" <% }else {%> method="get" action="/login"
@@ -38,6 +38,15 @@ include("./partials/_navigation.ejs") -%>
                   Endroll
                 </button>
               </form>
+              <% } %> <% } %> <% if (!user) { %>
+
+              <a
+                href="/register"
+                class="btn btn-warning btn-lg text-lg text-white"
+              >
+                Endroll
+              </a>
+
               <% } %>
             </div>
             <div class="meta-info-blog">
