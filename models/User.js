@@ -31,17 +31,20 @@ const Userschema = new Schema({
 
 Userschema.pre("save", async function (next) {
   const user = this;
-  try {
-    if (!user.isModified("password")) {
-      return next();
-    }
 
-    const hash = await bcrypt.hash(user.password, 10);
-    user.password = hash;
-    next();
-  } catch (error) {
+  if (!this.name || !this.email || !this.password) {
+    const error = new Error("Name, email, and password are required");
     return next(error);
   }
+
+  if (!user.isModified("password")) {
+    return next();
+  }
+
+  const hash = await bcrypt.hash(user.password, 10);
+  user.password = hash;
+
+  next();
 });
 
 const User = mongoose.model("User", Userschema);

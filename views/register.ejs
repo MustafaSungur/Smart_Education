@@ -7,6 +7,14 @@ include("./partials/_navigation.ejs") -%>
 
     <div class="row">
       <div class="col-xl-12 col-md-12 col-sm-12">
+        <div>
+          <% if (flashMessages) { %> <% if (flashMessages.success) { %>
+          <div class="alert alert-success"><%= flashMessages.success %></div>
+
+          <% } else if (flashMessages.error) { %>
+          <div class="alert alert-danger"><%= flashMessages.error %></div>
+          <% } %> <% } %>
+        </div>
         <div class="contact_form">
           <div id="message"></div>
           <form
@@ -14,6 +22,7 @@ include("./partials/_navigation.ejs") -%>
             name="contactform"
             method="post"
             action="/users/singup"
+            novalidate
           >
             <div class="row row-fluid">
               <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
@@ -23,7 +32,6 @@ include("./partials/_navigation.ejs") -%>
                   id="name"
                   class="form-control"
                   placeholder="Name"
-                  required
                 />
               </div>
               <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
@@ -33,7 +41,6 @@ include("./partials/_navigation.ejs") -%>
                   id="email"
                   class="form-control"
                   placeholder="Email"
-                  required
                 />
               </div>
               <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
@@ -49,7 +56,6 @@ include("./partials/_navigation.ejs") -%>
                   id="password"
                   class="form-control"
                   placeholder="Password"
-                  required
                 />
               </div>
               <div class="offset-1 col-lg-10 col-md-10 col-sm-10">

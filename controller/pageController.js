@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 exports.getIndex = (req, res) => {
   res.status(200).render("index", {
@@ -31,7 +32,8 @@ exports.getContactPage = (req, res) => {
 };
 
 exports.sendEmail = async (req, res) => {
-  const outputMessage = `
+  try {
+    const outputMessage = `
     <h1>Message Details</h1>
     <ul>
       <li>Name:${req.body.name}</li>
@@ -40,27 +42,33 @@ exports.sendEmail = async (req, res) => {
     <h1>Message</h1>
     <p>${req.body.message}</p>
   `;
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: "msungur33@gmail.com",
-      pass: "ozzvqgzieeamwnba",
-    },
-  });
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAILPASSWORD,
+      },
+    });
 
-  // async..await is not allowed in global scope, must use a wrapper
+    // async..await is not allowed in global scope, must use a wrapper
 
-  // send mail with defined transport object
-  const info = await transporter.sendMail({
-    from: '"Smart EDU Contact Form" <msungur33@gmail.com>', // sender address
-    to: "mustafasungur.ozturkk@gmail.com", // list of receivers
-    subject: "Smart EDU Contact Form", // Subject line
-    html: outputMessage, // html body
-  });
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: '"Smart EDU Contact Form" <msungur33@gmail.com>', // sender address
+      to: "mustafasungur.ozturkk@gmail.com", // list of receivers
+      subject: "Smart EDU Contact Form", // Subject line
+      html: outputMessage, // html body
+    });
 
-  console.log("Message sent: %s", info.messageId);
+    console.log("Message sent: %s", info.messageId);
 
-  res.status(200).redirect("contact");
+    req.flash("success", "We Received Your Message");
+
+    res.status(200).redirect("contact");
+  } catch (err) {
+    req.flash("error", "Message could not receiwed");
+    res.status(404).redirect("contact");
+  }
 };
