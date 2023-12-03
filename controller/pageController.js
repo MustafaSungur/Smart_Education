@@ -1,9 +1,17 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
+const Course = require("../models/Course");
+const User = require("../models/User");
+exports.getIndex = async (req, res) => {
+  const coursesCount = await Course.countDocuments();
+  const teacherCount = await User.countDocuments({ role: "teacher" });
+  const studentCount = await User.countDocuments({ role: "student" });
 
-exports.getIndex = (req, res) => {
   res.status(200).render("index", {
     page_name: "index",
+    coursesCount,
+    teacherCount,
+    studentCount,
   });
 };
 
