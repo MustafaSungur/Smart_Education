@@ -29,6 +29,9 @@ const courseSchema = new Schema(
       type: String,
       unique: true,
     },
+    image: {
+      type: String,
+    },
   },
   {
     timestamps: true,

@@ -9,7 +9,7 @@
     </h1>
   </div>
 </div>
-<% if(user.role =="teacher" )  { %>
+<% if(user.role == "teacher" ) {  %>
 <div id="overviews" class="section wb">
 
   <div class="container">
@@ -41,7 +41,13 @@
       <div class="col-lg-6 col-md-6 col-12">
         <div class="course-item mb-5">
           <div class="image-blog">
-            <img src="/images/blog_2.jpg" alt="" class="img-fluid" />
+            <img src="
+             <% if (courses[i].image !== null) { %>
+                 <%= courses[i].image %>
+              <% } else {%>
+                 /images/blog_2.jpg 
+                 <% } %>
+            " alt="" class="img-fluid" />
           </div>
           <div class="course-br">
             <div class="course-title">
@@ -87,7 +93,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <form method="post" action="/courses/course/<%= courses[i].slug %>?_method=PUT">
+              <form method="POST" action="/courses/course/<%= courses[i].slug %>?_method=PUT" encType="multipart/form-data">
                 <div class="form-group">
                   <input type="text" name="name" class="form-control" id="courseName" placeholder="Course Name" required
                     value="<%= courses[i].name %>" />
@@ -104,6 +110,9 @@
                     </option>
                     <% } %>
                   </select>
+                </div>
+                <div class="form-group">
+                  <input type="file" name="img" class="form-control"/>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -141,7 +150,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="post" action="/courses">
+        <form method="post" action="/courses"  encType="multipart/form-data">
           <div class="form-group">
             <input type="text" name="name" class="form-control" id="courseName" placeholder="Course Name" required />
           </div>
@@ -159,6 +168,9 @@
               <% } %>
             </select>
           </div>
+          <div class="form-group">
+            <input type="file" name="img" class="form-control" />
+          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">
               Cancel
@@ -173,13 +185,13 @@
 </div>
 <!-- ADD MODAL-END -->
 
-
-
-
-
 <% } %>
 
-<% if (user.role=="student") { %>
+
+
+
+
+<% if (user.role == "student") { %>
 <div id="overviews" class="section wb">
 
 
@@ -208,10 +220,17 @@
 
       <% for (let i=0; i < user.courses.length; i++) { %>
 
-      <div class="col-lg-6 col-md-6 col-12">
+      <div class="col-lg-6 col-md-6 col-12 ">
         <div class="course-item mb-5">
-          <div class="image-blog">
-            <img src="/images/blog_2.jpg" alt="" class="img-fluid" />
+          <div class="image-blog ">
+            <img src="
+             <% if (user.courses[i].image !== null) { %>
+                 <%= user.courses[i].image %>
+              <% } else {%>
+                 /images/blog_2.jpg 
+                 <% } %>
+                 "
+            alt="" class="img-fluid" />
           </div>
           <div class="course-br">
             <div class="course-title">
@@ -250,7 +269,7 @@
 <% } %>
 
 
-<% if (user.role=="admin") { %>
+<% if (user.role == "admin") { %>
 <div id="overviews" class="section wb">
 
  <div class="container">

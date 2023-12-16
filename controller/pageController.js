@@ -64,8 +64,8 @@ exports.sendEmail = async (req, res) => {
 
     // send mail with defined transport object
     const info = await transporter.sendMail({
-      from: '"Smart EDU Contact Form" <msungur33@gmail.com>', // sender address
-      to: "mustafasungur.ozturkk@gmail.com", // list of receivers
+      from: `"Smart EDU Contact Form" <${process.env.EMAIL}>`, // sender address
+      to: process.env.ToEMAIL, // list of receivers
       subject: "Smart EDU Contact Form", // Subject line
       html: outputMessage, // html body
     });

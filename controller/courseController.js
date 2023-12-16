@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const fs = require("fs");
 
 const Course = require("../models/Course");
 const Category = require("../models/Category");
@@ -8,17 +9,34 @@ exports.createCourse = async (req, res) => {
   try {
     const category = await Category.findOne({ name: req.body.category });
 
+    const uploadDir = "./public/uploads";
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+
+    let imagePath = null;
+
+    if (req.files && req.files.img) {
+      const uploadImage = req.files.img;
+      const uploadPath = __dirname + "/../public/uploads/" + uploadImage.name;
+
+      await uploadImage.mv(uploadPath);
+
+      imagePath = "/uploads/" + uploadImage.name;
+    }
+
     const course = await Course.create({
       name: req.body.name,
       description: req.body.description,
       category: category._id,
       user: req.session.userID,
+      image: imagePath,
     });
 
     req.flash("success", `${course.name} created successfully`);
     res.status(201).redirect("/courses");
   } catch (error) {
-    req.flash("error", `Error: Course could not created`);
+    req.flash("error", `Error: Course could not be created`);
     res.status(400).json({
       status: "fail",
       error: error.message,
@@ -134,6 +152,11 @@ exports.deleteCourse = async (req, res) => {
   try {
     const course = await Course.findOneAndRemove({ slug: req.params.slug });
     const usersToUpdate = await User.find({ courses: course._id });
+
+    if (course.image) {
+      let deleteImage = __dirname + "/../public" + course.image;
+      fs.unlinkSync(deleteImage);
+    }
     for (const user of usersToUpdate) {
       user.courses.pull(course._id);
       await user.save();
@@ -155,6 +178,28 @@ exports.updateCourse = async (req, res) => {
     course.name = req.body.name;
     course.description = req.body.description;
     course.category = req.body.category;
+
+    const uploadDir = "./public/uploads";
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+
+    if (req.files.img && course.img) {
+      let deleteImage = __dirname + "/../public" + course.image;
+      fs.unlinkSync(deleteImage);
+    }
+
+    let imagePath = null;
+
+    if (req.files && req.files.img) {
+      const uploadImage = req.files.img;
+      const uploadPath = __dirname + "/../public/uploads/" + uploadImage.name;
+
+      await uploadImage.mv(uploadPath);
+
+      imagePath = "/uploads/" + uploadImage.name;
+      course.image = imagePath;
+    }
     course.save();
 
     req.flash("success", `${course.name} update successfully`);

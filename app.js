@@ -4,6 +4,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const methodOverride = require("method-override");
+const fileUpload = require("express-fileupload");
 
 const pageRoute = require("./routes/pageRoute");
 const courseRoute = require("./routes/courseRoute");
@@ -25,6 +26,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 app.use(
   methodOverride("_method", {
     methods: ["GET", "POST"],
