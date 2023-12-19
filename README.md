@@ -37,7 +37,8 @@ This application operates with three different roles: teachers, students, and ad
 - nodemailer: ^6.9.7
 - slugify: ^1.6.6
 
-![7](https://github.com/MustafaSungur/Smart_Education/assets/81304546/c8502aad-a230-4ad3-91fb-6a6a1f313d92)
+
+![9](https://github.com/MustafaSungur/Smart_Education/assets/81304546/20227752-ea38-44a9-b549-3343340ce478)
 
 ![1](https://github.com/MustafaSungur/Smart_Education/assets/81304546/6bfd4bdc-5938-4290-b284-14b73aa8a2fe)
 
