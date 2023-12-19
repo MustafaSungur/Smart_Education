@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const { validationResult, body } = require("express-validator");
-
+const fs = require("fs");
 const User = require("../models/User");
 const Category = require("../models/Category");
 const Course = require("../models/Course");
@@ -26,12 +26,33 @@ exports.createUser = async (req, res) => {
   await Promise.all(validationRules.map((validation) => validation.run(req)));
 
   try {
-    const user = await User.create(req.body);
+    const uploadDir = "./public/uploads";
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+
+    let imagePath = null;
+
+    if (req.files && req.files.avatar) {
+      const uploadImage = req.files.avatar;
+      const uploadPath = __dirname + "/../public/uploads/" + uploadImage.name;
+
+      await uploadImage.mv(uploadPath);
+
+      imagePath = "/uploads/" + uploadImage.name;
+    }
+    const user = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      role: req.body.role,
+      password: req.body.password,
+      avatar: imagePath,
+    });
 
     res.status(201).redirect("/login");
   } catch (error) {
     const errors = validationResult(req);
-
+    console.log(error.message);
     for (let error of errors.errors) {
       req.flash("error", `${error.msg}`);
     }
@@ -89,6 +110,11 @@ exports.deleteUser = async (req, res) => {
   try {
     const deleteUser = await User.findByIdAndRemove(req.params.id);
     const course = await Course.deleteMany({ user: req.params.id });
+
+    if (deleteUser.avatar) {
+      let deleteImage = __dirname + "/../public" + deleteUser.avatar;
+      fs.unlinkSync(deleteImage);
+    }
 
     req.flash("success", `${deleteUser.name} deleted successfully`);
     res.status(200).redirect("/users/dashboard");

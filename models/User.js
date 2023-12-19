@@ -21,6 +21,9 @@ const Userschema = new Schema({
     enum: ["student", "teacher", "admin"],
     default: "student",
   },
+  avatar: {
+    type: String,
+  },
   courses: [
     {
       type: mongoose.Schema.ObjectId,

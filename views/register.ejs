@@ -18,10 +18,10 @@ include("./partials/_navigation.ejs") -%>
         <div class="contact_form">
           <div id="message"></div>
           <form
-            class=""
             name="contactform"
             method="post"
             action="/users/singup"
+            encType="multipart/form-data"
           >
             <div class="row row-fluid">
               <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
@@ -60,6 +60,12 @@ include("./partials/_navigation.ejs") -%>
                   placeholder="Password"
                 />
               </div>
+              <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+                <input
+                  type="file"
+                  name="avatar"
+                  class="form-control"
+                />
               <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
                 <button
                   type="submit"
